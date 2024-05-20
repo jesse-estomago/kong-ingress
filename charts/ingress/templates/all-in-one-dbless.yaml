@@ -2100,7 +2100,7 @@ spec:
       containers:
       - env:
         - name: CONTROLLER_ADMISSION_WEBHOOK_LISTEN
-          value: 8080
+          value: :8080
         - name: CONTROLLER_KONG_ADMIN_SVC
           value: kong/kong-admin
         - name: CONTROLLER_KONG_ADMIN_TLS_SKIP_VERIFY
