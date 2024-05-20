@@ -90,7 +90,7 @@ webhooks:
       namespace: kong
       name: kong-validation-webhook
     {{- if not .Values.ingressController.admissionWebhook.certificate.provided }}
-    caBundle: {{ b64enc $certCert }}
+    caBundle: {{ b64enc $caCert }}
     {{- else }}
     {{- if .Values.ingressController.admissionWebhook.certificate.caBundle }}
     caBundle: {{ b64enc .Values.ingressController.admissionWebhook.certificate.caBundle }}
