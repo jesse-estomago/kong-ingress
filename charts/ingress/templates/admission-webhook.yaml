@@ -23,4 +23,30 @@
 {{- $caKey = (b64dec (get $caSecret.data "tls.key")) -}}
 {{- end }}
 {{- end }}
+{{- if not .Values.ingressController.admissionWebhook.certificate.provided }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ template "kong.fullname" . }}-validation-webhook-ca-keypair
+  namespace:  {{ template "kong.namespace" . }}
+  labels:
+    {{- include "kong.metaLabels" . | nindent 4 }}
+type: kubernetes.io/tls
+data:
+    tls.crt: {{ b64enc $caCert  }}
+    tls.key: {{ b64enc $caKey  }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ template "kong.fullname" . }}-validation-webhook-keypair
+  namespace:  {{ template "kong.namespace" . }}
+  labels:
+    {{- include "kong.metaLabels" . | nindent 4 }}
+type: kubernetes.io/tls
+data:
+  tls.crt: {{ b64enc $certCert }}
+  tls.key: {{ b64enc $certKey }}
+{{- end }}
 {{- end }}
