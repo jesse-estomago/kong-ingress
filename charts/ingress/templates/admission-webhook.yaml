@@ -24,6 +24,78 @@
 {{- end }}
 {{- end }}
 {{- if not .Values.ingressController.admissionWebhook.certificate.provided }}
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: kong-validations
+webhooks:
+- name: validations.kong.konghq.com
+  objectSelector:
+    matchExpressions:
+    - key: owner
+      operator: NotIn
+      values:
+      - helm
+  failurePolicy: Ignore
+  sideEffects: None
+  admissionReviewVersions: ["v1", "v1beta1"]
+  rules:
+  - apiGroups:
+    - configuration.konghq.com
+    apiVersions:
+    - '*'
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - kongconsumers
+    - kongconsumergroups
+    - kongplugins
+    - kongclusterplugins
+    - kongingresses
+    - kongvaults
+  - apiGroups:
+    - ''
+    apiVersions:
+    - 'v1'
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - secrets
+    - services
+  - apiGroups:
+    - networking.k8s.io
+    apiVersions:
+      - 'v1'
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - ingresses
+  - apiGroups:
+    - gateway.networking.k8s.io
+    apiVersions:
+    - 'v1alpha2'
+    - 'v1beta1'
+    - 'v1'
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - gateways
+    - httproutes
+  clientConfig:
+    service:
+      namespace: kong
+      name: kong-validation-webhook
+    {{- if not .Values.ingressController.admissionWebhook.certificate.provided }}
+    caBundle: {{ b64enc $caCert }}
+    {{- else }}
+    {{- if .Values.ingressController.admissionWebhook.certificate.caBundle }}
+    caBundle: {{ b64enc .Values.ingressController.admissionWebhook.certificate.caBundle }}
+    {{- end }}
+    {{- end }}
 ---
 apiVersion: v1
 kind: Secret
