@@ -2099,6 +2099,8 @@ spec:
       automountServiceAccountToken: false
       containers:
       - env:
+        - name: CONTROLLER_ADMISSION_WEBHOOK_LISTEN
+          value: 8080
         - name: CONTROLLER_KONG_ADMIN_SVC
           value: kong/kong-admin
         - name: CONTROLLER_KONG_ADMIN_TLS_SKIP_VERIFY
@@ -2146,11 +2148,16 @@ spec:
           successThreshold: 1
           timeoutSeconds: 1
         volumeMounts:
+        - mountPath: /admission-webhook                                                                                                                                                                                                                  │
+│         name: validation-webhook
         - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
           name: kong-serviceaccount-token
           readOnly: true
       serviceAccountName: kong-serviceaccount
       volumes:
+      - name: validation-webhook                                                                                                                                                                                                                         │
+│       secret:                                                                                                                                                                                                                                          │
+│         secretName: kong-validation-webhook
       - name: kong-serviceaccount-token
         projected:
           sources:
