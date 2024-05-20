@@ -1,0 +1,10 @@
+apiVersion: v2
+description: Deploy Kong Ingress Controller and Kong Gateway
+home: https://konghq.com/
+icon: https://s3.amazonaws.com/downloads.kong/universe/assets/icon-kong-inc-large.png
+maintainers:
+  - name: Jesse Estomago
+    email: jesse.estomgo@inkaviation.com
+name: ingress
+version: 0.1.0
+appVersion: "1.0"
