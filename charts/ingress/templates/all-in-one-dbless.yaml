@@ -2056,7 +2056,7 @@ spec:
         requestPath: /status
         port: 8100
   targetRef:
-    group:
+    group: ""
     kind: Service
     name: kong-proxy
 
