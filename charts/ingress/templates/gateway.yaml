@@ -1,55 +1,55 @@
-apiVersion: gateway.networking.k8s.io/v1beta1
-kind: Gateway
-metadata:
-  name: kong-http-gateway
-  namespace: kong
-  annotations:
-    networking.gke.io/certmap: gcpsandbox-map
-spec:
-  gatewayClassName: gke-l7-global-external-managed
-  listeners:
-  - name: https
-    protocol: HTTPS
-    port: 443
-    #tls:
-    #  mode: Terminate
-    #  options:
-    #    networking.gke.io/certmap: gcpsandbox-map
-    allowedRoutes:
-      namespaces:
-        from: All
-      # namespaces:
-      #   from: Selector
-      #   selector:
-      #     matchLabels:
-      #       shared-gateway-access: "true"
-  # addresses:
-  # - type: NamedAddress
-  #   value: my-static-ip
----
-kind: HTTPRoute
-apiVersion: gateway.networking.k8s.io/v1beta1
-metadata:
-  name: kong-http-default-route
-  namespace: kong
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: kong-app3.gcpsandbox.inkcloud.io
-  labels:
-    gateway: kong-http-default-gateway
-spec:
-  parentRefs:
-  - name: kong-http-gateway
-    namespace: kong
-  hostnames:
-    - kong-app3.gcpsandbox.inkcloud.io
-  rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-    - group: ''
-      kind: Service
-      name: kong-proxy
-      port: 80
-      weight: 1
+# apiVersion: gateway.networking.k8s.io/v1beta1
+# kind: Gateway
+# metadata:
+#   name: kong-http-gateway
+#   namespace: kong
+#   annotations:
+#     networking.gke.io/certmap: gcpsandbox-map
+# spec:
+#   gatewayClassName: gke-l7-global-external-managed
+#   listeners:
+#   - name: https
+#     protocol: HTTPS
+#     port: 443
+#     #tls:
+#     #  mode: Terminate
+#     #  options:
+#     #    networking.gke.io/certmap: gcpsandbox-map
+#     allowedRoutes:
+#       namespaces:
+#         from: All
+#       # namespaces:
+#       #   from: Selector
+#       #   selector:
+#       #     matchLabels:
+#       #       shared-gateway-access: "true"
+#   # addresses:
+#   # - type: NamedAddress
+#   #   value: my-static-ip
+# ---
+# kind: HTTPRoute
+# apiVersion: gateway.networking.k8s.io/v1beta1
+# metadata:
+#   name: kong-http-default-route
+#   namespace: kong
+#   annotations:
+#     external-dns.alpha.kubernetes.io/hostname: kong-app3.gcpsandbox.inkcloud.io
+#   labels:
+#     gateway: kong-http-default-gateway
+# spec:
+#   parentRefs:
+#   - name: kong-http-gateway
+#     namespace: kong
+#   hostnames:
+#     - kong-app3.gcpsandbox.inkcloud.io
+#   rules:
+#   - matches:
+#     - path:
+#         type: PathPrefix
+#         value: /
+#     backendRefs:
+#     - group: ''
+#       kind: Service
+#       name: kong-proxy
+#       port: 80
+#       weight: 1
