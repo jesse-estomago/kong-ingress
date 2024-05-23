@@ -3,16 +3,18 @@ kind: Gateway
 metadata:
   name: kong-http-gateway
   namespace: kong
+  annotations:
+    networking.gke.io/certmap: gcpsandbox-map
 spec:
   gatewayClassName: gke-l7-global-external-managed
   listeners:
   - name: https
     protocol: HTTPS
     port: 443
-    tls:
-      mode: Terminate
-      options:
-        networking.gke.io/certmap: gcpsandbox-map
+    #tls:
+    #  mode: Terminate
+    #  options:
+    #    networking.gke.io/certmap: gcpsandbox-map
     allowedRoutes:
       namespaces:
         from: All
