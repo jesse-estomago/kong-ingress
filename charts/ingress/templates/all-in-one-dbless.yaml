@@ -2039,18 +2039,40 @@ spec:
   selector:
     app: proxy-kong
 ---
-apiVersion: cloud.google.com/v1
-kind: BackendConfig
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
 metadata:
-  name: kong-proxy-backend-config
+  name: kong-proxy-healthcheck
+  namespace: kong
 spec:
-  healthCheck:
-    healthyThreshold: 1
-    port: 8100
-    requestPath: /status
+  default:
+    checkIntervalSec: 5
     timeoutSec: 10
-    type: HTTP
-    unhealthyThreshold: 10
+    healthyThreshold: 2
+    unhealthyThreshold: 5
+    config:
+      type: HTTP
+      httpHealthCheck:
+        requestPath: /status
+        port: 8100
+  targetRef:
+    group:
+    kind: Service
+    name: kong-proxy
+
+# ---
+# apiVersion: cloud.google.com/v1
+# kind: BackendConfig
+# metadata:
+#   name: kong-proxy-backend-config
+# spec:
+#   healthCheck:
+#     healthyThreshold: 1
+#     port: 8100
+#     requestPath: /status
+#     timeoutSec: 10
+#     type: HTTP
+#     unhealthyThreshold: 10
 ---
 apiVersion: v1
 kind: Service
@@ -2058,7 +2080,7 @@ metadata:
   annotations:
     #service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
     #service.beta.kubernetes.io/aws-load-balancer-type: nlb
-    cloud.google.com/backend-config: '{"ports": {"443":"kong-proxy-backend-config"}}'
+    #cloud.google.com/backend-config: '{"ports": {"443":"kong-proxy-backend-config"}}'
   name: kong-proxy
   namespace: kong
 spec:
