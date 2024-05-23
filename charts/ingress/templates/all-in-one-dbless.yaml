@@ -2047,7 +2047,7 @@ metadata:
 spec:
   default:
     checkIntervalSec: 5
-    timeoutSec: 10
+    timeoutSec: 5
     healthyThreshold: 2
     unhealthyThreshold: 5
     config:
