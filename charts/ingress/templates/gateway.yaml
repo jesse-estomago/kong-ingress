@@ -33,7 +33,7 @@ metadata:
   name: kong-http-default-route
   namespace: kong
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: kong-app3.gcpsandbox.inkcloud.io
+    external-dns.alpha.kubernetes.io/hostname: kong-app3.gcpsandbox.inkcloud.io,api.gcpsandbox.inkcloud.io
   labels:
     gateway: kong-http-default-gateway
 spec:
@@ -42,6 +42,7 @@ spec:
     namespace: kong
   hostnames:
     - kong-app3.gcpsandbox.inkcloud.io
+    - api.gcpsandbox.inkcloud.io
   rules:
   - matches:
     - path:
