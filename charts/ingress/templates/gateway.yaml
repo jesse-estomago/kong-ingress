@@ -26,3 +26,27 @@ spec:
   # addresses:
   # - type: NamedAddress
   #   value: my-static-ip
+
+---
+{{- if .Values.gateway.enabled -}}
+{{- if .Capabilities.APIVersions.Has "gateway.networking.k8s.io/v1" -}}
+apiVersion: gateway.networking.k8s.io/v1
+{{- else if .Capabilities.APIVersions.Has "gateway.networking.k8s.io/v1beta1" -}}
+apiVersion: gateway.networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: gateway.networking.k8s.io/v1alpha2
+{{- end }}
+kind: Gateway
+metadata:
+  name: {{ .Values.gateway.name }}
+  namespace: {{ .Values.gateway.namespace }}
+spec:
+  gatewayClassName: {{ .Values.gateway.className }}
+  listeners:
+  - name: proxy
+    port: {{ .Values.gateway.port }}
+    protocol: {{ .Values.gateway.protocol }}
+    allowedRoutes:
+      namespaces:
+        from: All
+{{- end }}

@@ -5,3 +5,13 @@ ingressController:
     enabled: true
     certificate:
       provided: false
+
+
+# Common Gateway Values
+gateway:
+  enabled: true
+  name: common-gateway
+  className: kong
+  namespace: kong
+  port: 80
+  protocol: HTTP
