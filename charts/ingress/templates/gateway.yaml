@@ -10,7 +10,7 @@ metadata:
   name: kong-http-gateway
   namespace: kong
   annotations:
-    networking.gke.io/certmap: gcpsandbox-map
+    networking.gke.io/certmap: inkcloud-map
 spec:
   gatewayClassName: gke-l7-global-external-managed
   addresses:
