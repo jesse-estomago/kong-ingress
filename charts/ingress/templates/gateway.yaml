@@ -13,8 +13,9 @@ metadata:
     networking.gke.io/certmap: gcpsandbox-map
 spec:
   gatewayClassName: gke-l7-global-external-managed
-  address:
-    name: kong-gateway-ip
+  addresses:
+  - type: NamedAddress
+    value: kong-gateway-ip
   listeners:
   - name: https
     protocol: HTTPS
