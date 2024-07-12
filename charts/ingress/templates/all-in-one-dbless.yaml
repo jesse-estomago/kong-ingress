@@ -2038,27 +2038,27 @@ spec:
     targetPort: 8444
   selector:
     app: proxy-kong
----
-apiVersion: networking.gke.io/v1
-kind: HealthCheckPolicy
-metadata:
-  name: kong-proxy-healthcheck
-  namespace: kong
-spec:
-  default:
-    checkIntervalSec: 5
-    timeoutSec: 5
-    healthyThreshold: 2
-    unhealthyThreshold: 5
-    config:
-      type: HTTP
-      httpHealthCheck:
-        requestPath: /status
-        port: 8100
-  targetRef:
-    group: ""
-    kind: Service
-    name: kong-proxy
+# ---
+# apiVersion: networking.gke.io/v1
+# kind: HealthCheckPolicy
+# metadata:
+#   name: kong-proxy-healthcheck
+#   namespace: kong
+# spec:
+#   default:
+#     checkIntervalSec: 5
+#     timeoutSec: 5
+#     healthyThreshold: 2
+#     unhealthyThreshold: 5
+#     config:
+#       type: HTTP
+#       httpHealthCheck:
+#         requestPath: /status
+#         port: 8100
+#   targetRef:
+#     group: ""
+#     kind: Service
+#     name: kong-proxy
 
 # ---
 # apiVersion: cloud.google.com/v1
