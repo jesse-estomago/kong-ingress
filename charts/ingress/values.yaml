@@ -5,7 +5,6 @@ gateway:
   
   name: default-kong-gateway
   className: kong
-  namespace: {{ template "kong.namespace" . }}
   port: 80
   protocol: HTTP
 
