@@ -1,6 +1,14 @@
 namespace: kong
 
 gateway:
+  enabled: true
+  
+  name: default-kong-gateway
+  className: kong
+  namespace: {{ template "kong.namespace" . }}
+  port: 80
+  protocol: HTTP
+
   proxy:
     type: LoadBalancer
     http:
