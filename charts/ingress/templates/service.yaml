@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kong-admin
+  namespace: {{ template "kong.namespace" . }}
+spec:
+  clusterIP: None
+  ports:
+  - name: admin
+    port: 8444
+    protocol: TCP
+    targetPort: 8444
+  selector:
+    app: proxy-kong
+---
+apiVersion: v1
+kind: Service
+metadata:
+  {{- if .Values.gateway.annotations }}
+  annotations:
+  {{- range $key, $value := .Values.gateway.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  {{- end }}
+  name: kong-proxy
+  namespace: {{ template "kong.namespace" . }}
+spec:
+  ports:
+  - name: proxy
+    port: 80
+    protocol: TCP
+    targetPort: 8000
+  - name: proxy-ssl
+    port: 443
+    protocol: TCP
+    targetPort: 8443
+  selector:
+    app: proxy-kong
+  type: {{ .Values.gateway.proxy.type }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kong-validation-webhook
+  namespace: {{ template "kong.namespace" . }}
+spec:
+  ports:
+  - name: webhook
+    port: 443
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: ingress-kong
