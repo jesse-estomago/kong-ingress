@@ -3,6 +3,13 @@ namespace: kong
 gateway:
   proxy:
     type: LoadBalancer
+    http:
+      servicePort: 80
+      containerPort: 8000
+    tls:
+      servicePort: 443
+      containerPort: 8443
+      #overrideServiceTargetPort: 8000
     annotations: {}
 
 ingressController:
