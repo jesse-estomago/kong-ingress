@@ -3,7 +3,7 @@ namespace: kong
 gateway:
   proxy:
     type: LoadBalancer
-  annotations: {}
+    annotations: {}
 
 ingressController:
   enabled: true

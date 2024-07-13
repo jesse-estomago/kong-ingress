@@ -18,7 +18,7 @@ kind: Service
 metadata:
   {{- if .Values.gateway.annotations }}
   annotations:
-  {{- range $key, $value := .Values.gateway.annotations }}
+  {{- range $key, $value := .Values.gateway.proxy.annotations }}
     {{ $key }}: {{ $value | quote }}
   {{- end }}
   {{- end }}
